@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { storage } from "@/utils/storage/storage";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -48,6 +49,10 @@ export default function AboutYouScreen() {
   };
 
   const onPressSubmit = ()=>{
+    //get storage and save current data
+    let a = storage.getString("wakeUpTime")
+    console.log(a)
+    //navigate to next page
     router.replace('/home')
   }
 
@@ -122,7 +127,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "space-evenly",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "ghostwhite",
     paddingHorizontal: 20,
     gap: 40,
   },

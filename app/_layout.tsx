@@ -1,8 +1,9 @@
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
+
   return (
-    <Stack>
+    <Stack screenOptions={{statusBarStyle: "dark"}}>
       <Stack.Screen
         name="index"
         options={{
@@ -17,6 +18,7 @@ export default function RootLayout() {
           headerShown: true,
           headerTitleAlign: "center",
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "ghostwhite" },
           headerTitleStyle: { fontSize: 15, fontWeight: "400" },
         }}
       />
@@ -27,14 +29,21 @@ export default function RootLayout() {
           headerShown: true,
           headerTitleAlign: "center",
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "ghostwhite" },
           headerTitleStyle: { fontSize: 15, fontWeight: "400" },
         }}
       />
       <Stack.Screen
-      name="home"
-      options={{
-        title:"Home Screen",
-      }}/>
+        name="home"
+        options={{
+          title: "Hydration Level",
+          headerShown: false,
+          headerTitleAlign: "center",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: "ghostwhite" },
+          headerTitleStyle: { fontSize: 18, fontWeight: "500" },
+        }}
+      />
     </Stack>
   );
 }

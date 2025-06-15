@@ -1,5 +1,5 @@
- 
 import CustomTimePicker from "@/components/TimePicker";
+import { storage } from "@/utils/storage/storage";
 import Feather from "@expo/vector-icons/Feather";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -8,6 +8,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export default function InfoScreen() {
   const [wakeUpTime, setWakeUpTime] = useState("");
   const [bedTime, setBedTime] = useState("");
+
+  const onClickNext = () => {
+    //get storage and save current value
+    storage.set(wakeUpTime, wakeUpTime)
+    storage.set(bedTime, bedTime)
+    
+    //navigate to next page
+    router.push("/about_you");
+  };
 
   return (
     <View style={styles.container}>
@@ -36,11 +45,7 @@ export default function InfoScreen() {
           justifyContent: "center",
           alignItems: "center",
         }}
-        onPress={() => {
-          router.push("/about_you");
-          console.log("Wake-up Time:", wakeUpTime);
-          console.log("Bedtime:", bedTime);
-        }}
+        onPress={onClickNext}
       >
         <Text
           style={{
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     padding: 30,
-    backgroundColor: "white",
+    backgroundColor: "ghostwhite",
   },
   row: {
     flexDirection: "row",
