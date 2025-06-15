@@ -1,9 +1,36 @@
-import { Stack } from "expo-router";
+import Splash from "@/components/Splash";
+import { getIsOnboarded } from "@/utils/storage/storage";
+import { router, Stack } from "expo-router";
+import { useEffect, useState } from "react";
 
 export default function RootLayout() {
+  const [isReady, setReady] = useState(false);
+
+  useEffect(() => {
+  const checkIfOnboarded = () => {
+    const isOnboarded = getIsOnboarded();
+
+    if (isOnboarded === true) {
+      // Defer the navigation
+      setTimeout(() => {
+        router.replace("/home");
+      }, 0);
+    }
+
+    setReady(true);
+  };
+
+  checkIfOnboarded();
+}, []);
+
+
+  if (!isReady) {
+    // Optional: splash screen or loader
+    return <Splash />;
+  }
 
   return (
-    <Stack screenOptions={{statusBarStyle: "dark"}}>
+    <Stack screenOptions={{ statusBarStyle: "dark" }}>
       <Stack.Screen
         name="index"
         options={{

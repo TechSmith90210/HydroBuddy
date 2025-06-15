@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { storage } from "@/utils/storage/storage";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { router } from "expo-router";
@@ -48,13 +47,22 @@ export default function AboutYouScreen() {
     }
   };
 
-  const onPressSubmit = ()=>{
+  const onPressSubmit = () => {
     //get storage and save current data
-    let a = storage.getString("wakeUpTime")
-    console.log(a)
+    storage.set("age", age);
+    storage.set("weight", weight);
+
+    let a = storage.getNumber("age");
+    let b = storage.getNumber("weight");
+
+    console.log(a, b);
+
+    //set onboardingComplete as true
+    storage.set("isOnboarded", true);
+
     //navigate to next page
-    router.replace('/home')
-  }
+    router.replace("/home");
+  };
 
   return (
     <KeyboardAvoidingView
@@ -94,29 +102,27 @@ export default function AboutYouScreen() {
           />
         </View>
         <TouchableOpacity
-        style={{
-          backgroundColor: "dodgerblue",
-          height: 50,
-          width: "60%",
-          borderRadius: 80,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        onPress={()=>
-          onPressSubmit()
-        }
-      >
-        <Text
           style={{
-            fontSize: 16,
-            fontWeight: "500",
-            color: "white",
-            textAlign: "center",
+            backgroundColor: "dodgerblue",
+            height: 50,
+            width: "60%",
+            borderRadius: 80,
+            justifyContent: "center",
+            alignItems: "center",
           }}
+          onPress={() => onPressSubmit()}
         >
-          Next
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "500",
+              color: "white",
+              textAlign: "center",
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -135,7 +141,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     gap: 14,
-    flexDirection:"column",
+    flexDirection: "column",
   },
   label: {
     fontSize: 16,

@@ -11,8 +11,8 @@ export default function InfoScreen() {
 
   const onClickNext = () => {
     //get storage and save current value
-    storage.set(wakeUpTime, wakeUpTime)
-    storage.set(bedTime, bedTime)
+    storage.set("wakeUpTime", wakeUpTime)
+    storage.set("bedTime", bedTime)
     
     //navigate to next page
     router.push("/about_you");
