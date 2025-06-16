@@ -1,4 +1,5 @@
 import IntakeHistoryTile from "@/components/IntakeTile";
+import getMotivationalMessage from "@/utils/messages/message";
 import { storage } from "@/utils/storage/storage";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useEffect, useState } from "react";
@@ -21,45 +22,45 @@ type theProps = {
 
 export default function HomeScreen() {
   const dailyTotal = 3000;
-  const dateKey = new Date().toISOString().split("T")[0];
-
-  
 
   const [progress, setProgress] = useState(0);
   const [progressBar, setProgressBar] = useState(0);
 
+  const [message, setMessage] = useState("");
+
   const getCurrentProgress = () => {
-      const progress = storage.getNumber(`total_${dateKey}`) || 0;
-      const progressBar = (progress / dailyTotal) * 1;
-      setProgress(progress);
-      setProgressBar(progressBar);
-    };
+    const today = new Date().toLocaleDateString("en-CA");
+    const progress = storage.getNumber(`total_${today}`) || 0;
+    const computedProgressBar = (progress / dailyTotal) * 1;
+    setProgress(progress);
+    setProgressBar(computedProgressBar);
+    let message = getMotivationalMessage(computedProgressBar * 100);
+    setMessage(message);
+    console.log("Saving to key:", new Date().toLocaleDateString("en-CA"));
+  };
 
   useEffect(() => {
     getCurrentProgress();
-  }, [dateKey]);
-
+  }, []);
 
   const [history, setHistory] = useState<theProps[]>([]);
 
   const getHistory = () => {
-      const dateKey = new Date().toISOString().split("T")[0]; // e.g. "2025-06-16"
-      const history = storage.getString(dateKey);
-      const historyData = history ? JSON.parse(history) : [];
-      setHistory(historyData);
-    };
+    const dateKey = new Date().toLocaleDateString("en-CA"); // e.g. "2025-06-16"
+    const history = storage.getString(dateKey);
+    const historyData = history ? JSON.parse(history) : [];
+    setHistory(historyData);
+  };
   useEffect(() => {
-    
     getHistory();
   }, []);
 
   const onClickAddIntake = () => {
-    SheetManager.show("add-intake-sheet").then(()=> {
-      getHistory()
-      getCurrentProgress()
+    SheetManager.show("add-intake-sheet").then(() => {
+      getHistory();
+      getCurrentProgress();
     });
   };
-  
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -84,6 +85,7 @@ export default function HomeScreen() {
                 ]}
               />
             </View>
+            {message && <Text style={styles.message}>{message}</Text>}
           </View>
         </View>
         {/* intake history with list */}
@@ -96,11 +98,13 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={styles.addIntakeButton}
               onPress={onClickAddIntake}
+              activeOpacity={0.8}
             >
               <AntDesign name="plus" size={20} color="white" />
             </TouchableOpacity>
           </View>
           <FlatList
+            ListEmptyComponent={<Text>No Intake Yet</Text>}
             style={{ paddingTop: 10 }}
             data={[...history].reverse()}
             keyExtractor={(item) => item.id}
@@ -203,5 +207,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "400",
     color: "#6B7280",
+  },
+  message: {
+    fontSize: 13,
+    fontWeight: "500",
+    fontStyle: "italic",
+    letterSpacing: 0.2,
+    lineHeight: 18, // fix for visibility
+    color: "#374151", // cool dark gray
+    marginTop: 10,
   },
 });

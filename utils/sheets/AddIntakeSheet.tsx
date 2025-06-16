@@ -33,7 +33,7 @@ export default function AddIntakeSheet(
   const addIntake = () => {
     const intake = intakeML;
     const noOfGlasses = glasses;
-    const dateKey = new Date().toISOString().split("T")[0]; // e.g. "2025-06-16"
+    const dateKey = new Date().toLocaleDateString("en-CA"); // e.g. "2025-06-16"
 
     // Try to get existing history for today
     const existingData = storage.getString(dateKey);
