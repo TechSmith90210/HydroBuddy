@@ -1,8 +1,65 @@
+import IntakeHistoryTile from "@/components/IntakeTile";
+import { storage } from "@/utils/storage/storage";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+type theProps = {
+  id: string;
+  intake: number;
+  noOfGlasses: number;
+  time: string;
+};
+
 export default function HomeScreen() {
-  const progress = 0.4; // 40% progress
+  const dailyTotal = 3000;
+  const dateKey = new Date().toISOString().split("T")[0];
+
+  
+
+  const [progress, setProgress] = useState(0);
+  const [progressBar, setProgressBar] = useState(0);
+
+  const getCurrentProgress = () => {
+      const progress = storage.getNumber(`total_${dateKey}`) || 0;
+      const progressBar = (progress / dailyTotal) * 1;
+      setProgress(progress);
+      setProgressBar(progressBar);
+    };
+
+  useEffect(() => {
+    getCurrentProgress();
+  }, [dateKey]);
+
+
+  const [history, setHistory] = useState<theProps[]>([]);
+
+  const getHistory = () => {
+      const dateKey = new Date().toISOString().split("T")[0]; // e.g. "2025-06-16"
+      const history = storage.getString(dateKey);
+      const historyData = history ? JSON.parse(history) : [];
+      setHistory(historyData);
+    };
+  useEffect(() => {
+    
+    getHistory();
+  }, []);
+
+  const onClickAddIntake = () => {
+    SheetManager.show("add-intake-sheet").then(()=> {
+      getHistory()
+      getCurrentProgress()
+    });
+  };
+  
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -14,46 +71,43 @@ export default function HomeScreen() {
           <View style={styles.progressWrapper}>
             <View style={styles.progressSection}>
               <Text style={styles.title}>
-                <Text style={{ color: "gray", fontSize: 18 }}>1200 ml </Text>/
-                3000 ml
+                <Text style={{ color: "gray", fontSize: 18 }}>{progress} </Text>
+                / 3000 ml
               </Text>
             </View>
 
             <View style={styles.progressBar}>
               <View
-                style={[styles.progressFill, { width: `${progress * 100}%` }]}
+                style={[
+                  styles.progressFill,
+                  { width: `${progressBar * 100}%` },
+                ]}
               />
             </View>
           </View>
         </View>
+        {/* intake history with list */}
         <View style={[styles.bottomSheet]}>
           <View style={styles.bottomSheetHeader}>
-            <View style = {{gap:6}}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "700",
-                  letterSpacing: 0.4,
-                  color: "#1b1b1b",
-                }}
-              >
-                Today&apos;s Record
-              </Text>
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: "500",
-                  letterSpacing: 0.2,
-                  color: "#1b1b1b",
-                }}
-              >
-                History of intakes today
-              </Text>
+            <View style={styles.recordTextContainer}>
+              <Text style={styles.recordTitle}>Today’s Record</Text>
+              <Text style={styles.recordSubtitle}>Your intake history</Text>
             </View>
-            <TouchableOpacity style={styles.addIntakeButton} onPress={() => {}}>
-              <AntDesign name="plus" size={24} color="white" />
+            <TouchableOpacity
+              style={styles.addIntakeButton}
+              onPress={onClickAddIntake}
+            >
+              <AntDesign name="plus" size={20} color="white" />
             </TouchableOpacity>
           </View>
+          <FlatList
+            style={{ paddingTop: 10 }}
+            data={[...history].reverse()}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <IntakeHistoryTile intake={item.intake} time={item.time} />
+            )}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -63,24 +117,27 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "ghostwhite",
+    backgroundColor: "ghostwhite", // softer than ghostwhite
   },
   container: {
     flex: 1,
   },
   section: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 25,
   },
   greeting: {
-    fontSize: 25,
-    fontWeight: "500",
-    marginBottom: 8,
-    letterSpacing: 0.8,
+    fontSize: 22,
+    fontWeight: "600",
+    marginBottom: 6,
+    letterSpacing: 0.5,
+    color: "#1B1B1B",
   },
   subGreeting: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "400",
     letterSpacing: 0.2,
+    color: "#6B7280", // cool gray
   },
   progressWrapper: {
     marginTop: 30,
@@ -88,43 +145,63 @@ const styles = StyleSheet.create({
   progressSection: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginBottom: 12,
+    marginBottom: 10,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "500",
+    color: "#1B1B1B",
   },
   progressBar: {
-    height: 9,
+    height: 8,
     width: "100%",
-    backgroundColor: "lightsteelblue",
+    backgroundColor: "#E0E7FF", // soft indigo
     borderRadius: 10,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "dodgerblue",
+    backgroundColor: "#3B82F6", // nicer blue
     borderRadius: 10,
   },
   bottomSheet: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#f0f4f8",
-    padding: 25,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    padding: 20,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     marginTop: 20,
-    borderWidth: 0.5,
-    borderColor: "gray",
+    borderTopWidth: 0.75,
+    borderColor: "#E5E7EB",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: -3 },
   },
   bottomSheetHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: 10,
+    borderBottomWidth: 0.5,
+    borderColor: "#E5E7EB",
   },
-  addIntakeButton:{
-    padding:8,
-    backgroundColor:"dodgerblue",
-    borderRadius:8
-  }
+  addIntakeButton: {
+    padding: 10,
+    backgroundColor: "#2563EB", // deeper blue
+    borderRadius: 10,
+  },
+  recordTextContainer: {
+    gap: 2,
+  },
+  recordTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#111827",
+  },
+  recordSubtitle: {
+    fontSize: 13,
+    fontWeight: "400",
+    color: "#6B7280",
+  },
 });
