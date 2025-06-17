@@ -37,7 +37,7 @@ export default function AddIntakeSheet(
 
     // Try to get existing history for today
     const existingData = storage.getString(dateKey);
-    console.log(existingData);
+    // console.log(existingData);
     const history = existingData ? JSON.parse(existingData) : [];
 
     const newEntry = {
@@ -55,7 +55,6 @@ export default function AddIntakeSheet(
     const newTotal = existingTotal + intake;
     storage.set(totalKey, newTotal);
     SheetManager.hide("add-intake-sheet");
-
   };
 
   let imageSource = 1;

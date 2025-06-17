@@ -36,7 +36,7 @@ export default function HomeScreen() {
     setProgressBar(computedProgressBar);
     let message = getMotivationalMessage(computedProgressBar * 100);
     setMessage(message);
-    console.log("Saving to key:", new Date().toLocaleDateString("en-CA"));
+    // console.log("Saving to key:", new Date().toLocaleDateString("en-CA"));
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function HomeScreen() {
   const [history, setHistory] = useState<theProps[]>([]);
 
   const getHistory = () => {
-    const dateKey = new Date().toLocaleDateString("en-CA"); // e.g. "2025-06-16"
+    const dateKey = new Date().toLocaleDateString("en-CA");
     const history = storage.getString(dateKey);
     const historyData = history ? JSON.parse(history) : [];
     setHistory(historyData);
@@ -66,8 +66,15 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.section}>
-          <Text style={styles.greeting}>Welcome, Back!</Text>
-          <Text style={styles.subGreeting}>Stay hydrated, stay healthy!</Text>
+          <View style={styles.appBar}>
+            <View>
+              <Text style={styles.greeting}>Welcome, Back!</Text>
+              <Text style={styles.subGreeting}>
+                Stay hydrated, stay healthy!
+              </Text>
+            </View>
+            
+          </View>
 
           <View style={styles.progressWrapper}>
             <View style={styles.progressSection}>
@@ -123,6 +130,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "ghostwhite", // softer than ghostwhite
   },
+  appBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
   container: {
     flex: 1,
   },
@@ -191,9 +204,9 @@ const styles = StyleSheet.create({
     borderColor: "#E5E7EB",
   },
   addIntakeButton: {
-    padding: 10,
+    padding: 8,
     backgroundColor: "#2563EB", // deeper blue
-    borderRadius: 10,
+    borderRadius: 8,
   },
   recordTextContainer: {
     gap: 2,
