@@ -4,8 +4,7 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 import { storage } from "../storage/storage";
-export default function AddIntakeSheet(
-) {
+export default function AddIntakeSheet() {
   const [glasses, setGlasses] = useState(1);
   const [intakeML, setIntakeML] = useState(250);
 
@@ -70,18 +69,14 @@ export default function AddIntakeSheet(
   }
 
   return (
-    <ActionSheet containerStyle={styles.actionSheet}>
+    <ActionSheet containerStyle={styles.actionSheet} headerAlwaysVisible>
       <View
         style={{
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           height: "100%",
         }}
       >
-        <View style={{height:4, width: 100, backgroundColor: "lightgray",
-borderRadius: 10
-
-        }}></View>
         <View
           style={{
             width: "100%",
