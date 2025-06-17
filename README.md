@@ -1,50 +1,93 @@
-# Welcome to your Expo app 👋
+# 💧 Hydro Buddy
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Hydro Buddy** is your personal water intake tracker built with **React Native** and **Expo**. Stay hydrated, stay healthy — effortlessly!
 
-## Get started
+---
 
-1. Install dependencies
+## 📱 Features
 
-   ```bash
-   npm install
-   ```
+- 🧠 **Smart Recommendation** – Calculates your daily water intake goal based on age and weight.
+- 🥤 **Glass Tracking** – One tap to log a 250ml glass of water.
+- 📊 **Progress Visualization** – Beautiful progress bar and stats.
+- 📆 **Daily History** – View your past intake throughout the day.
+- 🔔 **Reminders** – Get timely notifications to drink water.
+- 💬 **Motivational Messages** – Encouraging prompts to keep you on track.
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🖼️ Screenshots
 
-In the output, you'll find options to open the app in a
+| Home Screen | Add Intake | Notification Screen |
+|-------------|------------|---------------------|
+| ![Home](screenshots/home1.jpg) | ![Add Intake](screenshots/action_sheet.jpg) | ![Notification](screenshots/notification_screen.jpg)  |
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🚀 Getting Started
 
-## Get a fresh project
-
-When you're ready, run:
+### 1. Clone the repository
 
 ```bash
-npm run reset-project
+git clone https://github.com/your-username/hydro-buddy.git
+cd hydro-buddy
+````
+
+### 2. Install dependencies
+
+```bash
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 3. Run the app
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+> Make sure you have Expo CLI installed:
+> `npm install -g expo-cli`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## ⚙️ Tech Stack
 
-Join our community of developers creating universal apps.
+* [React Native](https://reactnative.dev/)
+* [Expo](https://expo.dev/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [React Native Action Sheet](https://github.com/rafgraph/react-native-actions-sheet)
+* [Expo Notifications](https://docs.expo.dev/versions/latest/sdk/notifications/)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## 📂 Project Structure
+
+```
+hydro-buddy/
+├── assets/               # Icons and images
+├── components/           # UI components like IntakeHistoryTile
+├── screens/              # App screens (Home, Add, Settings)
+├── utils/                # Helper logic (intakeCalculator, storage, messages)
+├── app.json              # Expo configuration
+├── package.json
+└── README.md
+```
+
+---
+
+## 📦 Local Storage (via MMKV/AsyncStorage)
+
+* `age`, `weight` — basic user info
+* `total_YYYY-MM-DD` — total ml consumed that day
+* `YYYY-MM-DD` — JSON array of intake logs for the day
+
+---
+
+## 🙌 Author
+
+Made with 💙 by [Salman Shaikh](https://github.com/TechSmith90210)
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
