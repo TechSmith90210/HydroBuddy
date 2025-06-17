@@ -17,7 +17,7 @@ export const scheduleHydrationReminder = async () => {
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-    seconds: 10800,
+    seconds: 7200,
     repeats:true
     },
   });

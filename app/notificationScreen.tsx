@@ -1,6 +1,6 @@
 import {
-    cancelHydrationReminder,
-    scheduleHydrationReminder
+  cancelHydrationReminder,
+  scheduleHydrationReminder,
 } from "@/utils/notifications/notificationHandler";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -8,7 +8,10 @@ export default function NotificationScreen() {
   const handleSetupNotifications = async () => {
     try {
       await scheduleHydrationReminder();
-      Alert.alert("Success", "Hydration reminders are now scheduled every 10 seconds (for testing).");
+      Alert.alert(
+        "Success",
+        "Hydration reminders are now scheduled every 10 seconds (for testing)."
+      );
     } catch (err) {
       console.error(err);
       Alert.alert("Error", "Failed to schedule notification.");
@@ -29,16 +32,23 @@ export default function NotificationScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Notification Setup</Text>
 
-      <TouchableOpacity style={styles.button} onPress={handleSetupNotifications}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSetupNotifications}
+      >
         <Text style={styles.buttonText}>Setup Notifications</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleCancelNotifications}>
+      <TouchableOpacity
+        style={[styles.button, styles.cancelButton]}
+        onPress={handleCancelNotifications}
+      >
         <Text style={styles.buttonText}>Cancel Notifications</Text>
       </TouchableOpacity>
 
       <Text style={styles.note}>
-        Reminder: Notifications only appear when the app is in the background and not killed.
+        Reminder: Notifications only appear when the app is in the background
+        and not killed.
       </Text>
     </View>
   );
@@ -50,6 +60,7 @@ const styles = StyleSheet.create({
     padding: 24,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white"
   },
   title: {
     fontSize: 18,
