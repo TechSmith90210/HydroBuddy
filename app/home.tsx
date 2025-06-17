@@ -1,4 +1,5 @@
 import IntakeHistoryTile from "@/components/IntakeTile";
+import { getRecommendedWaterIntake } from "@/utils/intakeCalc/intakeCalculator";
 import getMotivationalMessage from "@/utils/messages/message";
 import { storage } from "@/utils/storage/storage";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -21,8 +22,12 @@ type theProps = {
 };
 
 export default function HomeScreen() {
-  const router = useRouter()
-  const dailyTotal = 3000;
+  const router = useRouter();
+  
+  //getting recommended amount of ml intake
+  let age = storage.getNumber("age") || 0
+  let weight = storage.getNumber("weight") || 0
+  const dailyTotal = getRecommendedWaterIntake(age=age,weight=weight)
 
   const [progress, setProgress] = useState(0);
   const [progressBar, setProgressBar] = useState(0);
@@ -32,7 +37,7 @@ export default function HomeScreen() {
   const getCurrentProgress = () => {
     const today = new Date().toLocaleDateString("en-CA");
     const progress = storage.getNumber(`total_${today}`) || 0;
-    const computedProgressBar = (progress / dailyTotal) * 1;
+    const computedProgressBar = (progress / dailyTotal.ml) * 1;
     setProgress(progress);
     setProgressBar(computedProgressBar);
     let message = getMotivationalMessage(computedProgressBar * 100);
@@ -87,7 +92,7 @@ export default function HomeScreen() {
             <View style={styles.progressSection}>
               <Text style={styles.title}>
                 <Text style={{ color: "gray", fontSize: 18 }}>{progress} </Text>
-                / 3000 ml
+                / {dailyTotal.ml} ml
               </Text>
             </View>
 

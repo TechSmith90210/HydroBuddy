@@ -7,19 +7,19 @@ import { storage } from "../storage/storage";
 export default function AddIntakeSheet(
 ) {
   const [glasses, setGlasses] = useState(1);
-  const [intakeML, setIntakeML] = useState(300);
+  const [intakeML, setIntakeML] = useState(250);
 
   const addGlass = () => {
     if (glasses >= 1) {
       setGlasses(glasses + 1);
-      setIntakeML(intakeML + 300);
+      setIntakeML(intakeML + 250);
     }
   };
 
   const removeGlass = () => {
     if (glasses > 1) {
       setGlasses(glasses - 1);
-      setIntakeML(intakeML - 300);
+      setIntakeML(intakeML - 250);
     }
   };
 
