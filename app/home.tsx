@@ -2,6 +2,7 @@ import IntakeHistoryTile from "@/components/IntakeTile";
 import getMotivationalMessage from "@/utils/messages/message";
 import { storage } from "@/utils/storage/storage";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   FlatList,
@@ -12,7 +13,6 @@ import {
 } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 type theProps = {
   id: string;
   intake: number;
@@ -21,6 +21,7 @@ type theProps = {
 };
 
 export default function HomeScreen() {
+  const router = useRouter()
   const dailyTotal = 3000;
 
   const [progress, setProgress] = useState(0);
@@ -36,7 +37,7 @@ export default function HomeScreen() {
     setProgressBar(computedProgressBar);
     let message = getMotivationalMessage(computedProgressBar * 100);
     setMessage(message);
-    // console.log("Saving to key:", new Date().toLocaleDateString("en-CA"));
+    console.log("Saving to key:", new Date().toLocaleDateString("en-CA"));
   };
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function HomeScreen() {
   const [history, setHistory] = useState<theProps[]>([]);
 
   const getHistory = () => {
-    const dateKey = new Date().toLocaleDateString("en-CA");
+    const dateKey = new Date().toLocaleDateString("en-CA"); // e.g. "2025-06-16"
     const history = storage.getString(dateKey);
     const historyData = history ? JSON.parse(history) : [];
     setHistory(historyData);
@@ -73,7 +74,13 @@ export default function HomeScreen() {
                 Stay hydrated, stay healthy!
               </Text>
             </View>
-            
+            <TouchableOpacity
+              onPress={() => {
+                router.push('/notificationScreen')
+              }}
+            >
+              <AntDesign name="bells" size={24} color="#1B1B1B" />
+            </TouchableOpacity>
           </View>
 
           <View style={styles.progressWrapper}>

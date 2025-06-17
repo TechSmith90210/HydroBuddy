@@ -73,6 +73,17 @@ export default function RootLayout() {
             headerTitleStyle: { fontSize: 18, fontWeight: "500" },
           }}
         />
+        <Stack.Screen
+          name="notificationScreen"
+          options={{
+            title: "notification Screen",
+            headerShown: true,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: { backgroundColor: "ghostwhite" },
+            headerTitleStyle: { fontSize: 18, fontWeight: "500" },
+          }}
+        />
       </Stack>
     </SheetProvider>
   );
